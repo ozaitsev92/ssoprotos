@@ -1,0 +1,25 @@
+version: '3'
+
+vars:
+  PROTO_DIR: proto
+  OUT_DIR: gen/go
+
+tasks:
+  clean:
+    desc: Clean generated files
+    aliases: [c]
+    cmds:
+      - rm -rf {{.OUT_DIR}}
+  generate:
+    desc: Generate Go code from .proto files
+    aliases: [gen, g]
+    cmds:
+      - mkdir -p {{.OUT_DIR}}
+      - |
+        protoc \
+          -I {{.PROTO_DIR}} \
+          --go_out={{.OUT_DIR}} \
+          --go_opt=paths=source_relative \
+          --go-grpc_out={{.OUT_DIR}} \
+          --go-grpc_opt=paths=source_relative \
+          {{.PROTO_DIR}}/sso/sso.proto
